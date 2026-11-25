@@ -1,20 +1,242 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
 
-export default function App() {
+import React from 'react';
+
+import {
+  NavigationContainer,
+} from '@react-navigation/native';
+
+import {
+  createNativeStackNavigator,
+} from '@react-navigation/native-stack';
+
+import {
+  createBottomTabNavigator,
+} from '@react-navigation/bottom-tabs';
+
+import { Ionicons } from '@expo/vector-icons';
+
+import { CartProvider } from './src/context/CartContext';
+
+// Экрандарды импорттау
+import WelcomeScreen from './src/screens/WelcomeScreen';
+import LoginScreen from './src/screens/LoginScreen';
+import SignUpScreen from './src/screens/SignUpScreen';
+
+import HomeScreen from './src/screens/HomeScreen';
+import ProductsScreen from './src/screens/ProductsScreen';
+import CartScreen from './src/screens/CartScreen';
+import FavouriteScreen from './src/screens/FavouriteScreen';
+import ProfileScreen from './src/screens/ProfileScreen';
+
+import ProductDetailsScreen from './src/screens/ProductDetailsScreen';
+import CategoriesScreen from './src/screens/CategoriesScreen';
+import FilterScreen from './src/screens/FilterScreen';
+
+import CheckoutScreen from './src/screens/CheckoutScreen';
+import OrderSuccessScreen from './src/screens/OrderSuccessScreen';
+import OrdersScreen from './src/screens/OrdersScreen';
+
+import PersonalInfoScreen from './src/screens/PersonalInfoScreen';
+import AddressScreen from './src/screens/AddressScreen';
+import PaymentScreen from './src/screens/PaymentScreen';
+import DeliveryTrackingScreen from './src/screens/DeliveryTrackingScreen';
+
+const Stack = createNativeStackNavigator();
+const Tab = createBottomTabNavigator();
+
+// Төменгі навигация
+function MainTabs() {
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <Tab.Navigator
+      screenOptions={({ route }) => ({
+        headerShown: false,
+
+        tabBarActiveTintColor: '#53B175',
+        tabBarInactiveTintColor: '#999999',
+
+        tabBarStyle: {
+          height: 65,
+          paddingBottom: 8,
+          paddingTop: 7,
+          backgroundColor: '#FFFFFF',
+          borderTopWidth: 1,
+          borderTopColor: '#EEEEEE',
+        },
+
+        tabBarLabelStyle: {
+          fontSize: 11,
+          fontWeight: '600',
+        },
+
+        tabBarIcon: ({ color, size }) => {
+          let iconName = 'ellipse-outline';
+
+          if (route.name === 'Home') {
+            iconName = 'home-outline';
+          } else if (route.name === 'Products') {
+            iconName = 'grid-outline';
+          } else if (route.name === 'Cart') {
+            iconName = 'cart-outline';
+          } else if (route.name === 'Favourite') {
+            iconName = 'heart-outline';
+          } else if (route.name === 'Profile') {
+            iconName = 'person-outline';
+          }
+
+          return (
+            <Ionicons
+              name={iconName}
+              size={size}
+              color={color}
+            />
+          );
+        },
+      })}
+    >
+
+      <Tab.Screen
+        name="Home"
+        component={HomeScreen}
+        options={{
+          title: 'Басты бет',
+        }}
+      />
+
+      <Tab.Screen
+        name="Products"
+        component={ProductsScreen}
+        options={{
+          title: 'Тауарлар',
+        }}
+      />
+
+      <Tab.Screen
+        name="Cart"
+        component={CartScreen}
+        options={{
+          title: 'Себет',
+        }}
+      />
+
+      <Tab.Screen
+        name="Favourite"
+        component={FavouriteScreen}
+        options={{
+          title: 'Таңдаулылар',
+        }}
+      />
+
+      <Tab.Screen
+        name="Profile"
+        component={ProfileScreen}
+        options={{
+          title: 'Профиль',
+        }}
+      />
+
+    </Tab.Navigator>
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+// Негізгі қосымша
+export default function App() {
+  return (
+    <CartProvider>
+      <NavigationContainer>
+
+        <Stack.Navigator
+          initialRouteName="Welcome"
+          screenOptions={{
+            headerShown: false,
+            animation: 'slide_from_right',
+          }}
+        >
+
+          {/* Кіру және тіркелу */}
+
+          <Stack.Screen
+            name="Welcome"
+            component={WelcomeScreen}
+          />
+
+          <Stack.Screen
+            name="Login"
+            component={LoginScreen}
+          />
+
+          <Stack.Screen
+            name="SignUp"
+            component={SignUpScreen}
+          />
+
+          {/* Негізгі беттер */}
+
+          <Stack.Screen
+            name="Main"
+            component={MainTabs}
+          />
+
+          {/* Тауарлар */}
+
+          <Stack.Screen
+            name="ProductDetails"
+            component={ProductDetailsScreen}
+          />
+
+          <Stack.Screen
+            name="Categories"
+            component={CategoriesScreen}
+          />
+
+          <Stack.Screen
+            name="Filter"
+            component={FilterScreen}
+          />
+
+          {/* Тапсырыс */}
+
+          <Stack.Screen
+            name="Checkout"
+            component={CheckoutScreen}
+          />
+
+          <Stack.Screen
+            name="OrderSuccess"
+            component={OrderSuccessScreen}
+          />
+
+          <Stack.Screen
+            name="Orders"
+            component={OrdersScreen}
+          />
+
+          {/* Профиль */}
+
+          <Stack.Screen
+            name="PersonalInfo"
+            component={PersonalInfoScreen}
+          />
+
+          <Stack.Screen
+            name="Address"
+            component={AddressScreen}
+          />
+
+          <Stack.Screen
+            name="Payment"
+            component={PaymentScreen}
+          />
+
+          {/* Жеткізу */}
+
+          <Stack.Screen
+            name="DeliveryTracking"
+            component={DeliveryTrackingScreen}
+          />
+
+        </Stack.Navigator>
+
+      </NavigationContainer>
+    </CartProvider>
+  );
+}

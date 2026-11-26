@@ -41,8 +41,66 @@ import AddressScreen from './src/screens/AddressScreen';
 import PaymentScreen from './src/screens/PaymentScreen';
 import DeliveryTrackingScreen from './src/screens/DeliveryTrackingScreen';
 
-const Stack = createNativeStackNavigator();
-const Tab = createBottomTabNavigator();
+// Тауар типі
+export type Product = {
+  id: number | string;
+  name: string;
+  price: number | string;
+  image?: string;
+  category?: string;
+  description?: string;
+};
+
+// Төменгі мәзірдің типтері
+export type MainTabParamList = {
+  Home: undefined;
+
+  Products:
+    | {
+        selectedCategory?: string;
+      }
+    | undefined;
+
+  Cart: undefined;
+  Favourite: undefined;
+  Profile: undefined;
+};
+
+// Негізгі экрандардың типтері
+export type RootStackParamList = {
+  Welcome: undefined;
+  Login: undefined;
+  SignUp: undefined;
+  Main: undefined;
+
+  ProductDetails: {
+    product: Product;
+  };
+
+  Categories: undefined;
+  Filter: undefined;
+  Checkout: undefined;
+  OrderSuccess: undefined;
+  Orders: undefined;
+  PersonalInfo: undefined;
+  Address: undefined;
+  Payment: {
+    amount?: number;
+  } | undefined;
+
+  DeliveryTracking:
+    | {
+        order?: any;
+        address?: any;
+      }
+    | undefined;
+};
+
+const Stack =
+  createNativeStackNavigator<RootStackParamList>();
+
+const Tab =
+  createBottomTabNavigator<MainTabParamList>();
 
 // Төменгі навигация
 function MainTabs() {
@@ -69,7 +127,12 @@ function MainTabs() {
         },
 
         tabBarIcon: ({ color, size }) => {
-          let iconName = 'ellipse-outline';
+          let iconName:
+            | 'home-outline'
+            | 'grid-outline'
+            | 'cart-outline'
+            | 'heart-outline'
+            | 'person-outline' = 'home-outline';
 
           if (route.name === 'Home') {
             iconName = 'home-outline';
@@ -93,7 +156,6 @@ function MainTabs() {
         },
       })}
     >
-
       <Tab.Screen
         name="Home"
         component={HomeScreen}
@@ -133,7 +195,6 @@ function MainTabs() {
           title: 'Профиль',
         }}
       />
-
     </Tab.Navigator>
   );
 }
@@ -143,7 +204,6 @@ export default function App() {
   return (
     <CartProvider>
       <NavigationContainer>
-
         <Stack.Navigator
           initialRouteName="Welcome"
           screenOptions={{
@@ -151,9 +211,7 @@ export default function App() {
             animation: 'slide_from_right',
           }}
         >
-
           {/* Кіру және тіркелу */}
-
           <Stack.Screen
             name="Welcome"
             component={WelcomeScreen}
@@ -170,14 +228,12 @@ export default function App() {
           />
 
           {/* Негізгі беттер */}
-
           <Stack.Screen
             name="Main"
             component={MainTabs}
           />
 
           {/* Тауарлар */}
-
           <Stack.Screen
             name="ProductDetails"
             component={ProductDetailsScreen}
@@ -194,7 +250,6 @@ export default function App() {
           />
 
           {/* Тапсырыс */}
-
           <Stack.Screen
             name="Checkout"
             component={CheckoutScreen}
@@ -211,7 +266,6 @@ export default function App() {
           />
 
           {/* Профиль */}
-
           <Stack.Screen
             name="PersonalInfo"
             component={PersonalInfoScreen}
@@ -228,14 +282,11 @@ export default function App() {
           />
 
           {/* Жеткізу */}
-
           <Stack.Screen
             name="DeliveryTracking"
             component={DeliveryTrackingScreen}
           />
-
         </Stack.Navigator>
-
       </NavigationContainer>
     </CartProvider>
   );
